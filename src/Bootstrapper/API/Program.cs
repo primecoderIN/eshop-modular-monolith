@@ -1,6 +1,3 @@
-using Catalog;
-using Ordering;
-using Basket;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services and dependencies to the DI container.
