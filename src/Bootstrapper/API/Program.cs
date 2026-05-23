@@ -3,7 +3,7 @@ using Ordering;
 using Basket;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services and dependencies to the DI container.
 
 //builder.Services.AddControllers();
 
@@ -15,6 +15,9 @@ builder.Services
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCatalogModule()
+   .UseOrderingModule()
+   .UseBasketModule();
 
 
 app.Run();

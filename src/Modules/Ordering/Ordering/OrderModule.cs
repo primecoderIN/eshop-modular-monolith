@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 
 
 namespace Ordering;
@@ -10,5 +11,9 @@ public static class OrderModule
       public static IServiceCollection AddOrderingModule(this IServiceCollection services, IConfiguration configuration )
     {
         return services;
+    }
+    public static IApplicationBuilder UseOrderingModule(this IApplicationBuilder app)
+    {
+        return app;
     }
 }
