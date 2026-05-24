@@ -1,26 +1,26 @@
 ﻿
 namespace Catalog.Products.Models;
 
-public class Product : Entity<Guid>
+public class Product : Aggregate<Guid>
 {
-    public string Name { get;private set; } = default!;
+    public string Name { get; private set; } = default!;
 
     public List<string> Category { get; private set; } = new();
 
-    public string Description { get;private set; } = default!;
+    public string Description { get; private set; } = default!;
 
     public string ImageFile { get; private set; } = default!;
 
     public decimal Price { get; private set; }
 
     //Create is static because here no objeect is created yet. 
-    public static Product Create(Guid id, string name, List<string>category, string description, string imageFile, decimal price)
+    public static Product Create(Guid id, string name, List<string> category, string description, string imageFile, decimal price)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentNullException.ThrowIfNull(category);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
 
-        return new Product
+        var product = new Product
         {
             Id = id,
             Name = name,
@@ -29,6 +29,12 @@ public class Product : Entity<Guid>
             ImageFile = imageFile,
             Price = price
         };
+
+
+
+        product.AddDomainEvent(new ProductCreatedEvent(product)); //INside static method there is no this so product.AddDomainEvent
+
+        return product;
 
     }
 
@@ -60,10 +66,13 @@ public class Product : Entity<Guid>
             ImageFile = imageFile;
         }
 
-        if (price.HasValue)
+        if (price.HasValue && Price != price.Value)
         {
+            //1.First ensure price is not null
+            //2.Then compare values
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price.Value);
             Price = price.Value;
+            AddDomainEvent(new ProductPriceChangeEvent(this));
         }
     }
 
