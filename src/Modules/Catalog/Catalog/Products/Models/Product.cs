@@ -32,16 +32,39 @@ internal class Product : Entity<Guid>
 
     }
 
-    public void Update(string name, List<string> category, string description, string imageFile, decimal price)
+    public void Update(
+     string? name = null,
+     List<string>? category = null,
+     string? description = null,
+     string? imageFile = null,
+     decimal? price = null)
     {
-        ArgumentException.ThrowIfNullOrEmpty(name);
-        ArgumentNullException.ThrowIfNull(category);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
-        Name = name;
-        Category = category;
-        Description = description;
-        ImageFile = imageFile;
-        Price = price;
+        if (name is not null)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+            Name = name;
+        }
+
+        if (category is not null)
+        {
+            Category = category;
+        }
+
+        if (description is not null)
+        {
+            Description = description;
+        }
+
+        if (imageFile is not null)
+        {
+            ImageFile = imageFile;
+        }
+
+        if (price.HasValue)
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price.Value);
+            Price = price.Value;
+        }
     }
 
 }
