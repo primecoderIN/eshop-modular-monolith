@@ -1,7 +1,7 @@
 ﻿
 namespace Catalog.Products.Models;
 
-internal class Product : Entity<Guid>
+public class Product : Entity<Guid>
 {
     public string Name { get;private set; } = default!;
 
